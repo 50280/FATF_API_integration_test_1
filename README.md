@@ -9,6 +9,7 @@
 
 ## Repository Strcuture Description
 
+```
 repo-root/
 ├─ 00_infrastructure/
 │  ├─ 01_docker/                 # local setup, containers, etc.
@@ -37,4 +38,5 @@ repo-root/
 │  ├─ 03_learningC/              # report set C
 │  └─ 04_learningD/              # report set D
 │
-└─ README.md                     # (recommended) overview of repo
+└─ README.md                     # repo overview
+```
