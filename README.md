@@ -11,32 +11,53 @@
 
 ```
 repo-root/
-├─ 00_infrastructure/
-│  ├─ 01_docker/                 # local setup, containers, etc.
-│  └─ 02_migrations/             # database DDLs or schema migrations
+├─ 01_preprocess_legacy_data/
+│  ├─ 01_data_mapping/           # mapping old schema → new schema
+│  └─ 02_data_cleaning/          # standardize + validate legacy files
 │
-├─ 01_extract/                   # extraction layer (API + legacy)
-│  ├─ 01_legacy_data/            # scripts to ingest historical data
-│  └─ 02_API/                    # API extraction logic
+├─ 02_integrate_API_data/        # merge API and preprocessed legacy data
+│  ├─ raw/                       # API JSON/CSV dumps (optional)
+│  ├─ staging/                   # combined tables before upload
+│  └─ logs/                      # API call + integration logs
 │
-├─ 02_clean/                     # cleaning and standardization
-│  ├─ 01_rules/                  # mapping or cleaning rules
-│  ├─ 02_transforms/             # transformation scripts (Python/SQL)
-│  └─ 03_merge/                  # intermediate joins or merge logic
+├─ 03_upload_API_to_SQL/         # push merged dataset to SQL
+│  ├─ ddl/                       # create table scripts
+│  ├─ dml/                       # insert/update/merge statements
+│  ├─ utils/                     # helper functions for DB connections
+│  └─ validation/                # row counts, schema checks, etc.
 │
-├─ 03_merge/                     # merging stage (integration)
-│  ├─ 01_SQL/                    # SQL merge scripts
-│  ├─ 02_models/                 # models or intermediate tables
-│  └─ 03_tests/                  # merge-level validation tests
+├─ 04_power_BI/                  # Power BI dashboards + helper code
+│  ├─ 00_helper_functions/       # shared Power BI or DAX utilities
+│  ├─ 01_JAT/                    # dashboard group 1
+│  ├─ 02_XX/                     # dashboard group 2
+│  ├─ 03_XX/                     # dashboard group 3
+│  ├─ 04_XX/                     # dashboard group 4
+│  └─ 05_XX/                     # dashboard group 5
 │
-├─ 04_publish/                   # publishing or output stage
-│  └─ (empty or WIP)             # final outputs / exports / marts
+├─ 05_other_outputs/             # misc exports / interim data
+│  ├─ logs/                      # optional: run logs
+│  ├─ archive/                   # old CSVs or reports
+│  └─ temp/                      # temp outputs not for prod
 │
-├─ 04_reports_powerBI/           # Power BI reporting artifacts
-│  ├─ 01_JAT/                    # report set A
-│  ├─ 02_learningB/              # report set B
-│  ├─ 03_learningC/              # report set C
-│  └─ 04_learningD/              # report set D
+├─ config/
+│  ├─ connections.yml            # DB + API connection details
+│  └─ params.yml                 # environment / global params
 │
-└─ README.md                     # repo overview
+├─ scripts/
+│  ├─ run_all.py                 # orchestrate 01→05 steps
+│  ├─ upload_to_sql.py
+│  └─ publish_powerbi.ps1
+│
+├─ tests/
+│  ├─ unit/                      # unit tests for scripts
+│  ├─ integration/               # integration tests (API + SQL)
+│  └─ e2e/                       # end-to-end run validation
+│
+├─ .github/workflows/
+│  ├─ ci.yml                     # linting + testing on push
+│  └─ schedule.yml               # automated nightly pipeline
+│
+├─ .env.example
+└─ README.md
+
 ```
